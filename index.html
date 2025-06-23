@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Servicio Técnico CH GROUP</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#0056b3',secondary:'#e63946'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Montserrat', sans-serif;
+}
+.screen {
+display: none;
+}
+.screen.active {
+display: block;
+}
+.custom-select {
+position: relative;
+}
+.custom-select-options {
+display: none;
+position: absolute;
+width: 100%;
+z-index: 10;
+}
+.custom-select.open .custom-select-options {
+display: block;
+}
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="relative w-[375px] mx-auto min-h-screen bg-white shadow-lg">
+<!-- Navbar -->
+<nav class="fixed w-full top-0 bg-primary text-white py-4 px-4 flex items-center justify-between z-10">
+<h1 class="font-semibold text-2xl tracking-wide">CH GROUP</h1>
+<button id="admin-login" class="text-white hover:text-white/80">
+<i class="ri-admin-line ri-lg"></i>
+</button>
+</nav>
+<!-- Welcome Screen -->
+<div id="welcome-screen" class="screen active pt-20 pb-20 px-6">
+<div class="flex flex-col items-center justify-center min-h-[600px]">
+<div class="mb-6 w-40 h-40 flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=technical%20service%2C%20maintenance%2C%20repair%20tools%2C%20professional%20equipment%2C%20blue%20and%20white%20color%20scheme%2C%20minimalist%20design%2C%20isolated%20on%20white%20background%2C%20centered%20composition&width=300&height=300&seq=1&orientation=squarish" alt="Servicio técnico" class="w-full h-full object-contain">
+</div>
+<h2 class="text-2xl font-semibold text-center mb-4 text-gray-800">Bienvenidos al servicio técnico de CH GROUP</h2>
+<p class="text-center text-gray-600 mb-8">Estamos aquí para ayudarte con cualquier incidencia técnica en tu apartamento.</p>
+<button id="go-to-form" class="bg-primary hover:bg-primary/90 text-white py-3 px-8 rounded-button flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+<i class="ri-tools-line ri-lg mr-2"></i>
+<span>Reportar Incidencia</span>
+</button>
+<p class="text-sm text-gray-500 mt-6 text-center">Tiempo máximo de espera: 2 días</p>
+</div>
+</div>
+<!-- Incident Form Screen -->
+<div id="incident-form" class="screen pt-20 pb-20 px-6">
+<div class="mb-6">
+<h2 class="text-xl font-semibold mb-2 text-gray-800">Reportar una incidencia</h2>
+<p class="text-gray-600 text-sm">Por favor, completa el siguiente formulario para reportar tu incidencia técnica.</p>
+</div>
+<form id="incidence-form" action="https://readdy.ai/api/form/d1cmf5ihnf08iom4v8mg" method="POST" class="space-y-5">
+<!-- Contact Information -->
+<div class="space-y-4">
+<h3 class="text-sm font-medium text-gray-700">Información de contacto</h3>
+<div class="grid grid-cols-1 gap-4">
+<div>
+<label for="guest-name" class="block text-sm text-gray-600 mb-1">Nombre completo</label>
+<input type="text" id="guest-name" name="guest-name" class="w-full border border-gray-300 rounded-button py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Ingresa tu nombre completo">
+</div>
+<div>
+<label for="guest-email" class="block text-sm text-gray-600 mb-1">Correo electrónico</label>
+<input type="email" id="guest-email" name="guest-email" class="w-full border border-gray-300 rounded-button py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="ejemplo@correo.com">
+</div>
+<div>
+<label for="guest-phone" class="block text-sm text-gray-600 mb-1">Teléfono (WhatsApp)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500">+34</span>
+<input type="tel" id="guest-phone" name="guest-phone" class="w-full border border-gray-300 rounded-button py-3 pl-12 pr-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="600 000 000" pattern="[0-9]{9}" maxlength="9">
+</div>
+</div>
+<div>
+<label for="preferred-contact" class="block text-sm text-gray-600 mb-1">Método de contacto preferido</label>
+<div class="flex space-x-4">
+<label class="flex items-center">
+<input type="radio" name="preferred-contact" value="whatsapp" class="w-4 h-4 text-primary">
+<span class="ml-2 text-sm text-gray-600">WhatsApp</span>
+</label>
+<label class="flex items-center">
+<input type="radio" name="preferred-contact" value="email" class="w-4 h-4 text-primary">
+<span class="ml-2 text-sm text-gray-600">Email</span>
+</label>
+</div>
+</div>
+<div>
+<label for="availability" class="block text-sm text-gray-600 mb-1">Disponibilidad horaria preferida</label>
+<div class="grid grid-cols-2 gap-2">
+<label class="flex items-center p-3 border border-gray-200 rounded-button cursor-pointer hover:bg-gray-50">
+<input type="checkbox" name="availability" value="morning" class="w-4 h-4 text-primary">
+<span class="ml-2 text-sm text-gray-600">Mañana (9:00 - 14:00)</span>
+</label>
+<label class="flex items-center p-3 border border-gray-200 rounded-button cursor-pointer hover:bg-gray-50">
+<input type="checkbox" name="availability" value="afternoon" class="w-4 h-4 text-primary">
+<span class="ml-2 text-sm text-gray-600">Tarde (16:00 - 20:00)</span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<!-- Apartment Selection -->
+<div class="space-y-2">
+<label for="apartment" class="block text-sm font-medium text-gray-700">Selecciona tu apartamento</label>
+<div class="custom-select relative">
+<button type="button" id="apartment-button" class="w-full bg-white border border-gray-300 rounded-button py-3 px-4 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary cursor-pointer">
+<span id="apartment-value">Seleccionar apartamento</span>
+<i class="ri-arrow-down-s-line ri-lg w-5 h-5 flex items-center justify-center"></i>
+</button>
+<div class="custom-select-options mt-1 max-h-60 overflow-auto rounded-md bg-white shadow-lg border border-gray-200">
+<ul class="py-1">
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Jacinto Aquenza">Jacinto Aquenza</li>
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Galicia">Galicia</li>
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Aragón">Aragón</li>
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Gaspar">Gaspar</li>
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Marina Escalera 7">Marina Escalera 7</li>
+<li class="apartment-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="Marina Escalera 9">Marina Escalera 9</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Room Selection (Hidden initially) -->
+<div id="room-selection" class="space-y-2 hidden">
+<label for="room" class="block text-sm font-medium text-gray-700">Selecciona la habitación</label>
+<div class="custom-select relative">
+<button type="button" id="room-button" class="w-full bg-white border border-gray-300 rounded-button py-3 px-4 text-left flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary cursor-pointer">
+<span id="room-value">Seleccionar habitación</span>
+<i class="ri-arrow-down-s-line ri-lg w-5 h-5 flex items-center justify-center"></i>
+</button>
+<div class="custom-select-options mt-1 max-h-60 overflow-auto rounded-md bg-white shadow-lg border border-gray-200">
+<ul class="py-1">
+<li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 1">HAB 1</li>
+<li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 2">HAB 2</li>
+<li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 3">HAB 3</li>
+<li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 4">HAB 4</li>
+<li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 5">HAB 5</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Incident Description (Hidden initially) -->
+<div id="incident-description" class="space-y-2 hidden">
+<label for="incident" class="block text-sm font-medium text-gray-700">Describe la incidencia</label>
+<textarea id="incident" name="incident" rows="4" class="w-full border border-gray-300 rounded-button py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Describe detalladamente el problema que estás experimentando..."></textarea>
+<div class="mt-4">
+<label class="block text-sm font-medium text-gray-700 mb-2">¿Deseas añadir una foto? (Opcional)</label>
+<div class="flex items-center justify-center w-full">
+<label for="incident-photo" class="w-full flex flex-col items-center justify-center px-4 py-6 bg-white border border-gray-300 border-dashed rounded-button cursor-pointer hover:bg-gray-50">
+<div class="flex flex-col items-center justify-center pt-5 pb-6">
+<i class="ri-image-add-line ri-2x text-gray-400 mb-2"></i>
+<p class="text-sm text-gray-500">Haz clic para subir una foto</p>
+<p class="text-xs text-gray-400 mt-1">PNG, JPG hasta 5MB</p>
+</div>
+<input id="incident-photo" name="incident-photo" type="file" accept="image/*" class="hidden">
+</label>
+</div>
+<div id="photo-preview" class="hidden mt-4">
+<div class="relative">
+<img id="preview-image" src="" alt="Vista previa" class="w-full h-48 object-cover rounded-button">
+<button type="button" id="remove-photo" class="absolute top-2 right-2 bg-white/80 backdrop-blur-sm p-2 rounded-full hover:bg-white">
+<i class="ri-close-line ri-lg text-gray-700"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Submit Button (Hidden initially) -->
+<div id="submit-container" class="pt-4 hidden">
+<button type="submit" id="submit-incident" class="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-button flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+<i class="ri-send-plane-line ri-lg mr-2"></i>
+<span>Enviar incidencia</span>
+</button>
+</div>
+</form>
+<div class="mt-6">
+<button id="back-to-welcome" class="w-full border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-button flex items-center justify-center hover:bg-gray-50 transition-all duration-300">
+<i class="ri-arrow-left-line ri-lg mr-2"></i>
+<span>Volver</span>
+</button>
+</div>
+</div>
+<!-- Confirmation Screen -->
+<div id="confirmation-screen" class="screen pt-20 pb-20 px-6">
+<div class="flex flex-col items-center justify-center min-h-[600px]">
+<div class="w-20 h-20 flex items-center justify-center mb-6 bg-green-100 rounded-full">
+<i class="ri-check-line ri-2x text-green-500"></i>
+</div>
+<h2 class="text-xl font-semibold text-center mb-4 text-gray-800">¡Incidencia reportada con éxito!</h2>
+<div class="bg-blue-50 border-l-4 border-primary p-4 rounded-md mb-6">
+<p class="text-sm text-gray-700 mb-3">El técnico se pondrá en contacto contigo para acordar día y hora.</p>
+<p class="text-sm text-gray-700">Recuerde que si la visita no se efectúa por causas ajenas al técnico, tendrá que esperar hasta la siguiente lista de espera (puede ser entre 2 a 4 días más).</p>
+</div>
+<div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-md mb-8">
+<p class="text-sm font-medium text-gray-700">Tiempo máximo de espera para atender incidencias: 2 días</p>
+</div>
+<div class="space-y-3 w-full">
+<button id="new-incident" class="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-button flex items-center justify-center transition-all duration-300 shadow-md hover:shadow-lg">
+<i class="ri-add-line ri-lg mr-2"></i>
+<span>Nueva incidencia</span>
+</button>
+<button id="back-to-home" class="w-full border border-gray-300 bg-white text-gray-700 py-3 px-4 rounded-button flex items-center justify-center hover:bg-gray-50 transition-all duration-300">
+<i class="ri-home-line ri-lg mr-2"></i>
+<span>Volver al inicio</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Admin Login Screen -->
+<div id="admin-login-screen" class="screen pt-20 pb-20 px-6">
+<div class="flex flex-col items-center justify-center min-h-[600px]">
+<div class="w-full max-w-sm">
+<h2 class="text-2xl font-semibold text-center mb-6 text-gray-800">Acceso Administrador</h2>
+<form id="admin-login-form" class="space-y-4">
+<div>
+<label for="admin-password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+<input type="password" id="admin-password" class="w-full border border-gray-300 rounded-button py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary" placeholder="Ingresa la contraseña">
+</div>
+<button type="submit" class="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-button flex items-center justify-center transition-all duration-300">
+<span>Acceder</span>
+</button>
+</form>
+<button id="back-from-admin" class="w-full mt-4 border border-gray-300 bg-white text-gray-700 py-2 px-4 rounded-button flex items-center justify-center hover:bg-gray-50 transition-all duration-300">
+<i class="ri-arrow-left-line ri-lg mr-2"></i>
+<span>Volver</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Admin Dashboard Screen -->
+<div id="admin-dashboard" class="screen pt-20 pb-20 px-6">
+<div class="flex flex-col min-h-[600px]">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-xl font-semibold text-gray-800">Panel de Incidencias</h2>
+<button id="admin-logout" class="text-gray-600 hover:text-gray-800">
+<i class="ri-logout-box-line ri-lg"></i>
+</button>
+</div>
+<div class="space-y-4">
+<div class="bg-white rounded-lg shadow p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-medium text-gray-800">Incidencias Pendientes</h3>
+<span class="bg-primary/10 text-primary px-2 py-1 rounded-full text-sm">2 nuevas</span>
+</div>
+<div class="space-y-4">
+<div class="border border-gray-200 rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-medium text-gray-800">María González</p>
+<p class="text-sm text-gray-600">Jacinto Aquenza - HAB 3</p>
+</div>
+<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Nuevo</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Problema con la ducha, no sale agua caliente</p>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Mañana</span>
+<span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">WhatsApp</span>
+</div>
+<div class="flex gap-2">
+<a href="https://wa.me/34600000000" target="_blank" class="flex-1 bg-green-500 hover:bg-green-600 text-white py-2 px-3 rounded-button flex items-center justify-center">
+<i class="ri-whatsapp-line ri-lg mr-2"></i>
+<span>WhatsApp</span>
+</a>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2 px-3 rounded-button flex items-center justify-center">
+<i class="ri-calendar-line ri-lg mr-2"></i>
+<span>Programar</span>
+</button>
+</div>
+</div>
+<div class="border border-gray-200 rounded-lg p-4">
+<div class="flex justify-between items-start mb-3">
+<div>
+<p class="font-medium text-gray-800">Carlos Ruiz</p>
+<p class="text-sm text-gray-600">Marina Escalera 7 - HAB 2</p>
+</div>
+<span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Nuevo</span>
+</div>
+<p class="text-sm text-gray-600 mb-3">Aire acondicionado no enfría</p>
+<div class="flex flex-wrap gap-2 mb-3">
+<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Tarde</span>
+<span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Email</span>
+</div>
+<div class="flex gap-2">
+<a href="mailto:ejemplo@correo.com" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 px-3 rounded-button flex items-center justify-center">
+<i class="ri-mail-line ri-lg mr-2"></i>
+<span>Email</span>
+</a>
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white py-2 px-3 rounded-button flex items-center justify-center">
+<i class="ri-calendar-line ri-lg mr-2"></i>
+<span>Programar</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script id="admin-script">
+document.addEventListener('DOMContentLoaded', function() {
+const adminLoginBtn = document.getElementById('admin-login');
+const adminLoginScreen = document.getElementById('admin-login-screen');
+const adminDashboard = document.getElementById('admin-dashboard');
+const adminLoginForm = document.getElementById('admin-login-form');
+const adminLogoutBtn = document.getElementById('admin-logout');
+const backFromAdminBtn = document.getElementById('back-from-admin');
+adminLoginBtn.addEventListener('click', () => {
+showScreen(adminLoginScreen);
+});
+backFromAdminBtn.addEventListener('click', () => {
+showScreen(welcomeScreen);
+});
+adminLoginForm.addEventListener('submit', (e) => {
+e.preventDefault();
+const password = document.getElementById('admin-password').value;
+if (password === 'admin123') {
+showScreen(adminDashboard);
+document.getElementById('admin-password').value = '';
+} else {
+const notification = document.createElement('div');
+notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+notification.innerHTML = 'Contraseña incorrecta';
+document.body.appendChild(notification);
+setTimeout(() => notification.remove(), 3000);
+}
+});
+adminLogoutBtn.addEventListener('click', () => {
+showScreen(welcomeScreen);
+});
+});
+</script>
+<script id="navigation-script">
+document.addEventListener('DOMContentLoaded', function() {
+// Screen navigation
+const welcomeScreen = document.getElementById('welcome-screen');
+const incidentForm = document.getElementById('incident-form');
+const confirmationScreen = document.getElementById('confirmation-screen');
+// Buttons
+const goToFormBtn = document.getElementById('go-to-form');
+const backToWelcomeBtn = document.getElementById('back-to-welcome');
+const backToHomeBtn = document.getElementById('back-to-home');
+const newIncidentBtn = document.getElementById('new-incident');
+// Navigation functions
+function showScreen(screen) {
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+screen.classList.add('active');
+window.scrollTo(0, 0);
+}
+goToFormBtn.addEventListener('click', () => showScreen(incidentForm));
+backToWelcomeBtn.addEventListener('click', () => showScreen(welcomeScreen));
+backToHomeBtn.addEventListener('click', () => showScreen(welcomeScreen));
+newIncidentBtn.addEventListener('click', () => {
+// Reset form
+document.getElementById('apartment-value').textContent = 'Seleccionar apartamento';
+document.getElementById('room-value').textContent = 'Seleccionar habitación';
+document.getElementById('incident').value = '';
+// Hide sections
+document.getElementById('room-selection').classList.add('hidden');
+document.getElementById('incident-description').classList.add('hidden');
+document.getElementById('submit-container').classList.add('hidden');
+showScreen(incidentForm);
+});
+});
+</script>
+<script id="form-interaction-script">
+document.addEventListener('DOMContentLoaded', function() {
+const photoInput = document.getElementById('incident-photo');
+const photoPreview = document.getElementById('photo-preview');
+const previewImage = document.getElementById('preview-image');
+const removePhotoButton = document.getElementById('remove-photo');
+photoInput.addEventListener('change', function(e) {
+const file = e.target.files[0];
+if (file) {
+if (file.size > 5 * 1024 * 1024) {
+const notification = document.createElement('div');
+notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+notification.innerHTML = 'La imagen no debe superar los 5MB';
+document.body.appendChild(notification);
+setTimeout(() => notification.remove(), 3000);
+photoInput.value = '';
+return;
+}
+const reader = new FileReader();
+reader.onload = function(e) {
+previewImage.src = e.target.result;
+photoPreview.classList.remove('hidden');
+};
+reader.readAsDataURL(file);
+}
+});
+removePhotoButton.addEventListener('click', function() {
+photoInput.value = '';
+photoPreview.classList.add('hidden');
+previewImage.src = '';
+});
+// Form elements
+const apartmentButton = document.getElementById('apartment-button');
+const roomButton = document.getElementById('room-button');
+const roomSelection = document.getElementById('room-selection');
+const incidentDescription = document.getElementById('incident-description');
+const submitContainer = document.getElementById('submit-container');
+const incidenceForm = document.getElementById('incidence-form');
+// Custom select functionality
+function setupCustomSelect(buttonId, optionClass) {
+const button = document.getElementById(buttonId);
+const customSelect = button.closest('.custom-select');
+button.addEventListener('click', function() {
+customSelect.classList.toggle('open');
+});
+document.querySelectorAll('.' + optionClass).forEach(option => {
+option.addEventListener('click', function() {
+const value = this.getAttribute('data-value');
+const valueSpan = button.querySelector('span');
+valueSpan.textContent = value;
+customSelect.classList.remove('open');
+// Trigger change event
+const event = new Event('change');
+button.dispatchEvent(event);
+});
+});
+// Close when clicking outside
+document.addEventListener('click', function(e) {
+if (!customSelect.contains(e.target)) {
+customSelect.classList.remove('open');
+}
+});
+}
+setupCustomSelect('apartment-button', 'apartment-option');
+setupCustomSelect('room-button', 'room-option');
+// Form progression
+apartmentButton.addEventListener('change', function() {
+if (apartmentButton.querySelector('span').textContent !== 'Seleccionar apartamento') {
+roomSelection.classList.remove('hidden');
+}
+});
+roomButton.addEventListener('change', function() {
+if (roomButton.querySelector('span').textContent !== 'Seleccionar habitación') {
+incidentDescription.classList.remove('hidden');
+submitContainer.classList.remove('hidden');
+}
+});
+// Form submission
+incidenceForm.addEventListener('submit', async function(e) {
+e.preventDefault();
+
+const formData = new FormData();
+formData.append('guest-name', document.getElementById('guest-name').value);
+formData.append('guest-email', document.getElementById('guest-email').value);
+formData.append('guest-phone', document.getElementById('guest-phone').value);
+formData.append('preferred-contact', document.querySelector('input[name="preferred-contact"]:checked')?.value);
+
+const availability = document.querySelectorAll('input[name="availability"]:checked');
+availability.forEach(item => {
+    formData.append('availability', item.value);
+});
+
+formData.append('apartment', document.getElementById('apartment-button').querySelector('span').textContent);
+formData.append('room', document.getElementById('room-button').querySelector('span').textContent);
+formData.append('incident', document.getElementById('incident').value);
+
+const guestName = document.getElementById('guest-name').value;
+const guestEmail = document.getElementById('guest-email').value;
+const guestPhone = document.getElementById('guest-phone').value;
+const preferredContact = document.querySelector('input[name="preferred-contact"]:checked')?.value;
+const apartment = document.getElementById('apartment-button').querySelector('span').textContent;
+const room = document.getElementById('room-button').querySelector('span').textContent;
+const incident = document.getElementById('incident').value;
+// Validate contact information
+if (!guestName || !guestEmail || !guestPhone || !preferredContact || availability.length === 0) {
+const validationMessage = document.createElement('div');
+validationMessage.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-md mt-4';
+validationMessage.innerHTML = '<p class="text-sm text-red-700">Por favor, completa todos los campos de contacto.</p>';
+const existingMessage = incidenceForm.querySelector('.bg-red-50');
+if (existingMessage) {
+existingMessage.remove();
+}
+incidenceForm.appendChild(validationMessage);
+return;
+}
+// Validate email format
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if (!emailRegex.test(guestEmail)) {
+const validationMessage = document.createElement('div');
+validationMessage.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-md mt-4';
+validationMessage.innerHTML = '<p class="text-sm text-red-700">Por favor, ingresa un correo electrónico válido.</p>';
+const existingMessage = incidenceForm.querySelector('.bg-red-50');
+if (existingMessage) {
+existingMessage.remove();
+}
+incidenceForm.appendChild(validationMessage);
+return;
+}
+// Validate phone format
+const phoneRegex = /^[0-9]{9}$/;
+if (!phoneRegex.test(guestPhone)) {
+const validationMessage = document.createElement('div');
+validationMessage.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-md mt-4';
+validationMessage.innerHTML = '<p class="text-sm text-red-700">Por favor, ingresa un número de teléfono válido (9 dígitos).</p>';
+const existingMessage = incidenceForm.querySelector('.bg-red-50');
+if (existingMessage) {
+existingMessage.remove();
+}
+incidenceForm.appendChild(validationMessage);
+return;
+}
+const submitButton = document.getElementById('submit-incident');
+const originalButtonContent = submitButton.innerHTML;
+if (apartment === 'Seleccionar apartamento' ||
+room === 'Seleccionar habitación' ||
+incident.trim() === '') {
+const validationMessage = document.createElement('div');
+validationMessage.className = 'bg-red-50 border-l-4 border-red-500 p-4 rounded-md mt-4';
+validationMessage.innerHTML = '<p class="text-sm text-red-700">Por favor, completa todos los campos del formulario.</p>';
+const existingMessage = incidenceForm.querySelector('.bg-red-50');
+if (existingMessage) {
+existingMessage.remove();
+}
+incidenceForm.appendChild(validationMessage);
+return;
+}
+// Show loading state
+submitButton.disabled = true;
+submitButton.innerHTML = `
+<div class="flex items-center">
+<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+Procesando...
+</div>`;
+try {
+const response = await fetch(incidenceForm.action, {
+    method: 'POST',
+    body: new URLSearchParams(formData),
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+    },
+});
+
+if (!response.ok) {
+    throw new Error('Network response was not ok');
+}
+// Generate reference number
+const referenceNumber = 'INC-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+// Update confirmation screen with reference number
+const confirmationMessage = document.createElement('div');
+confirmationMessage.className = 'bg-gray-50 border border-gray-200 rounded-md p-4 mb-6';
+confirmationMessage.innerHTML = `
+<p class="text-sm text-gray-700 mb-2">Número de referencia:</p>
+<p class="text-lg font-semibold text-primary">${referenceNumber}</p>
+`;
+const confirmationScreen = document.getElementById('confirmation-screen');
+const existingReference = confirmationScreen.querySelector('.bg-gray-50');
+if (existingReference) {
+existingReference.remove();
+}
+confirmationScreen.querySelector('.bg-blue-50').before(confirmationMessage);
+// Show success notification
+const notification = document.createElement('div');
+notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+notification.innerHTML = 'Incidencia enviada con éxito';
+document.body.appendChild(notification);
+// Remove notification after 3 seconds
+setTimeout(() => {
+notification.remove();
+}, 3000);
+// Show confirmation screen
+document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+confirmationScreen.classList.add('active');
+window.scrollTo(0, 0);
+} catch (error) {
+// Show error notification
+const notification = document.createElement('div');
+notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+notification.innerHTML = 'Error al enviar la incidencia. Por favor, inténtalo de nuevo.';
+document.body.appendChild(notification);
+setTimeout(() => {
+notification.remove();
+}, 3000);
+} finally {
+// Reset button state
+submitButton.disabled = false;
+submitButton.innerHTML = originalButtonContent;
+}
+});
+});
+</script>
+</body>
+</html>
