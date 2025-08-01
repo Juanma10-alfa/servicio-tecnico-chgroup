@@ -143,7 +143,7 @@ display: block;
 <i class="ri-arrow-down-s-line ri-lg w-5 h-5 flex items-center justify-center"></i>
 </button>
 <div class="custom-select-options mt-1 max-h-60 overflow-auto rounded-md bg-white shadow-lg border border-gray-200">
-<ul class="py-1">
+<ul id="room-options" class="py-1">
 <li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 1">HAB 1</li>
 <li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 2">HAB 2</li>
 <li class="room-option px-4 py-2 hover:bg-gray-100 cursor-pointer" data-value="HAB 3">HAB 3</li>
@@ -415,6 +415,15 @@ const roomSelection = document.getElementById('room-selection');
 const incidentDescription = document.getElementById('incident-description');
 const submitContainer = document.getElementById('submit-container');
 const incidenceForm = document.getElementById('incidence-form');
+// Apartment rooms mapping
+const apartmentRooms = {
+  'Jacinto Aquenza': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5'],
+  'Galicia': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5'],
+  'Aragón': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5'],
+  'Gaspar': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5'],
+  'Marina Escalera 7': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5'],
+  'Marina Escalera 9': ['HAB 1', 'HAB 2', 'HAB 3', 'HAB 4', 'HAB 5']
+};
 // Custom select functionality
 function setupCustomSelect(buttonId, optionClass) {
 const button = document.getElementById(buttonId);
@@ -435,18 +444,35 @@ button.dispatchEvent(event);
 });
 // Close when clicking outside
 document.addEventListener('click', function(e) {
-if (!customSelect.contains(e.target)) {
-customSelect.classList.remove('open');
-}
+  if (!customSelect.contains(e.target)) {
+    customSelect.classList.remove('open');
+  }
 });
+}
+function populateRooms(rooms) {
+  const list = document.getElementById('room-options');
+  list.innerHTML = '';
+  rooms.forEach(r => {
+    const li = document.createElement('li');
+    li.className = 'room-option px-4 py-2 hover:bg-gray-100 cursor-pointer';
+    li.setAttribute('data-value', r);
+    li.textContent = r;
+    list.appendChild(li);
+  });
+  setupCustomSelect('room-button', 'room-option');
 }
 setupCustomSelect('apartment-button', 'apartment-option');
 setupCustomSelect('room-button', 'room-option');
 // Form progression
 apartmentButton.addEventListener('change', function() {
-if (apartmentButton.querySelector('span').textContent !== 'Seleccionar apartamento') {
-roomSelection.classList.remove('hidden');
-}
+  const selected = apartmentButton.querySelector('span').textContent;
+  if (selected !== 'Seleccionar apartamento') {
+    populateRooms(apartmentRooms[selected] || []);
+    document.getElementById('room-value').textContent = 'Seleccionar habitación';
+    roomSelection.classList.remove('hidden');
+    incidentDescription.classList.add('hidden');
+    submitContainer.classList.add('hidden');
+  }
 });
 roomButton.addEventListener('change', function() {
 if (roomButton.querySelector('span').textContent !== 'Seleccionar habitación') {
