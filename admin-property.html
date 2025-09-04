@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propiedad</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="max-w-3xl mx-auto p-6 space-y-6">
+  <div class="flex justify-between items-center">
+    <h1 id="prop-name" class="text-2xl font-bold"></h1>
+    <button id="logout" class="text-sm text-primary">Salir</button>
+  </div>
+  <div>
+    <label class="block text-sm mb-1">URL QR</label>
+    <div class="flex space-x-2">
+      <input id="qr-url" class="flex-grow border rounded p-2" readonly>
+      <button id="copy-qr" class="px-3 py-2 bg-primary text-white rounded">Copiar</button>
+    </div>
+  </div>
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Tickets</h2>
+    <ul id="ticket-list" class="space-y-2"></ul>
+  </section>
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Eventos</h2>
+    <form id="event-form" class="space-y-2 mb-4">
+      <input id="event-title" class="w-full border rounded p-2" placeholder="Título">
+      <input id="event-date" type="date" class="w-full border rounded p-2">
+      <button class="px-3 py-2 bg-primary text-white rounded" type="submit">Guardar</button>
+    </form>
+    <ul id="event-list" class="space-y-1"></ul>
+  </section>
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Transporte</h2>
+    <form id="transport-form" class="space-y-2">
+      <input name="taxi" class="w-full border rounded p-2" placeholder="Taxi URL">
+      <input name="privateTaxi" class="w-full border rounded p-2" placeholder="Private Taxi URL">
+      <input name="bus" class="w-full border rounded p-2" placeholder="Bus URL">
+      <button class="px-3 py-2 bg-primary text-white rounded" type="submit">Guardar</button>
+    </form>
+  </section>
+</div>
+<script type="module" src="./js/admin-property.js"></script>
+</body>
+</html>

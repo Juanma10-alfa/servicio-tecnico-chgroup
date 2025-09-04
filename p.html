@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ibiza Fix</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+<header id="top-bar" class="text-white p-4 flex justify-between items-center">
+  <span class="font-bold">Ibiza Fix</span>
+  <img id="logo" class="h-8" alt="logo">
+</header>
+<div class="p-4">
+  <p id="description" class="mb-4 text-center"></p>
+  <div id="main-grid" class="grid grid-cols-2 gap-4 mb-6">
+    <button id="btn-repairs" class="bg-gray-200 py-8 rounded text-lg font-medium">Averías</button>
+    <button id="btn-cleaning" class="bg-gray-200 py-8 rounded text-lg font-medium">Limpieza</button>
+    <button id="btn-transport" class="bg-gray-200 py-8 rounded text-lg font-medium">Transp.</button>
+    <button id="btn-events" class="bg-gray-200 py-8 rounded text-lg font-medium">Otros</button>
+  </div>
+  <div id="forms" class="space-y-4"></div>
+  <div id="transport" class="hidden space-y-2"></div>
+  <div id="events" class="hidden space-y-1"></div>
+</div>
+<footer class="mt-auto p-4 text-center text-sm text-gray-600 space-y-1">
+  <div id="address"></div>
+  <div><a id="email" class="underline"></a></div>
+  <button id="support" class="mt-2 px-4 py-2 bg-gray-200 rounded">Soporte</button>
+</footer>
+<a id="chat" class="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full" href="https://wa.me/" target="_blank">WA</a>
+<script type="module" src="./js/property.js"></script>
+</body>
+</html>

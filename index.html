@@ -329,8 +329,8 @@ adminLoginForm.addEventListener('submit', (e) => {
 e.preventDefault();
 const password = document.getElementById('admin-password').value;
 if (password === 'admin123') {
-showScreen(adminDashboard);
-document.getElementById('admin-password').value = '';
+localStorage.setItem('isAdmin','true');
+window.location.href = 'admin.html';
 } else {
 const notification = document.createElement('div');
 notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
