@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "next": "16.0.0",
+    "next": "latest",
     "next-auth": "^5.0.0-beta.25",
     "pg": "^8.13.1",
     "react": "19.0.0",
