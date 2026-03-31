@@ -1,8 +1,6 @@
-import NextAuth from 'next-auth';
-import authConfig from '@/auth.config';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export const { auth: middleware } = NextAuth(authConfig);
-
-export const config = {
-  matcher: ['/admin/:path*'],
-};
+export function middleware(_request: NextRequest) {
+  return NextResponse.next();
+}
