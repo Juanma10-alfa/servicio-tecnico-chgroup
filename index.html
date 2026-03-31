@@ -66,7 +66,7 @@ display: block;
 <h2 class="text-xl font-semibold mb-2 text-gray-800">Reportar una incidencia</h2>
 <p class="text-gray-600 text-sm">Por favor, completa el siguiente formulario para reportar tu incidencia técnica.</p>
 </div>
-<form id="incidence-form" action="https://readdy.ai/api/form/d1cmf5ihnf08iom4v8mg" method="POST" class="space-y-5">
+<form id="incidence-form" action="/api/incidents" method="POST" enctype="multipart/form-data" class="space-y-5">
 <!-- Contact Information -->
 <div class="space-y-4">
 <h3 class="text-sm font-medium text-gray-700">Información de contacto</h3>
@@ -166,7 +166,7 @@ display: block;
 <p class="text-sm text-gray-500">Haz clic para subir una foto</p>
 <p class="text-xs text-gray-400 mt-1">PNG, JPG hasta 5MB</p>
 </div>
-<input id="incident-photo" name="incident-photo" type="file" accept="image/*" class="hidden">
+<input id="incident-photo" name="incident-photo" type="file" accept="image/jpeg,image/png,image/webp" class="hidden">
 </label>
 </div>
 <div id="photo-preview" class="hidden mt-4">
@@ -383,9 +383,19 @@ const photoInput = document.getElementById('incident-photo');
 const photoPreview = document.getElementById('photo-preview');
 const previewImage = document.getElementById('preview-image');
 const removePhotoButton = document.getElementById('remove-photo');
+let photoObjectUrl = null;
 photoInput.addEventListener('change', function(e) {
 const file = e.target.files[0];
 if (file) {
+if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+const notification = document.createElement('div');
+notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
+notification.innerHTML = 'Formato no válido. Solo se permiten JPEG, PNG o WebP.';
+document.body.appendChild(notification);
+setTimeout(() => notification.remove(), 3000);
+photoInput.value = '';
+return;
+}
 if (file.size > 5 * 1024 * 1024) {
 const notification = document.createElement('div');
 notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
@@ -395,18 +405,22 @@ setTimeout(() => notification.remove(), 3000);
 photoInput.value = '';
 return;
 }
-const reader = new FileReader();
-reader.onload = function(e) {
-previewImage.src = e.target.result;
+if (photoObjectUrl) {
+URL.revokeObjectURL(photoObjectUrl);
+}
+photoObjectUrl = URL.createObjectURL(file);
+previewImage.src = photoObjectUrl;
 photoPreview.classList.remove('hidden');
-};
-reader.readAsDataURL(file);
 }
 });
 removePhotoButton.addEventListener('click', function() {
 photoInput.value = '';
 photoPreview.classList.add('hidden');
 previewImage.src = '';
+if (photoObjectUrl) {
+URL.revokeObjectURL(photoObjectUrl);
+photoObjectUrl = null;
+}
 });
 // Form elements
 const apartmentButton = document.getElementById('apartment-button');
@@ -498,6 +512,9 @@ availability.forEach(item => {
 formData.append('apartment', document.getElementById('apartment-button').querySelector('span').textContent);
 formData.append('room', document.getElementById('room-button').querySelector('span').textContent);
 formData.append('incident', document.getElementById('incident').value);
+if (photoInput.files[0]) {
+formData.append('incident-photo', photoInput.files[0]);
+}
 
 const guestName = document.getElementById('guest-name').value;
 const guestEmail = document.getElementById('guest-email').value;
@@ -572,10 +589,7 @@ Procesando...
 try {
 const response = await fetch(incidenceForm.action, {
     method: 'POST',
-    body: new URLSearchParams(formData),
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-    },
+    body: formData,
 });
 
 if (!response.ok) {
