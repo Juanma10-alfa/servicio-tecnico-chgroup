@@ -1,12 +1,50 @@
 # Servicio Técnico CH GROUP
 
-Este repositorio contiene la página web para que los huéspedes de CH GROUP puedan reportar incidencias en sus habitaciones o apartamentos.
+Proyecto migrado a Next.js (App Router) con autenticación administrativa usando Auth.js/NextAuth.
 
-## Uso
+## Requisitos
 
-1. Abre el archivo `index.html` en tu navegador.
-2. Selecciona el apartamento y la habitación correspondiente.
-3. Describe la incidencia y envía el formulario.
-4. Verás un mensaje de confirmación con el tiempo máximo de espera de dos días.
+- Node.js 20+
+- PostgreSQL
 
-La web está optimizada para dispositivos móviles, por lo que se recomienda escanear el código QR disponible en cada habitación para acceder rápidamente al formulario.
+## Variables de entorno
+
+Crea un archivo `.env.local` con:
+
+```bash
+DATABASE_URL=postgres://usuario:password@localhost:5432/servicio_tecnico
+AUTH_SECRET=tu_secreto_largo_y_aleatorio
+AUTH_URL=http://localhost:3000
+ADMIN_EMAIL=admin@chgroup.com
+ADMIN_PASSWORD=TuPasswordSegura123
+```
+
+## Configuración inicial
+
+1. Instala dependencias:
+   ```bash
+   npm install
+   ```
+2. Ejecuta el schema SQL en tu base de datos usando `db/schema.sql`.
+3. Crea o actualiza el usuario administrador:
+   ```bash
+   npm run seed:admin
+   ```
+4. Levanta el servidor:
+   ```bash
+   npm run dev
+   ```
+
+## Acceso administrativo
+
+- Login: `/admin/login`
+- Panel: `/admin`
+- Todas las rutas `/admin/*` requieren sesión server-side con rol `admin`.
+
+## Seguridad implementada
+
+- Login con proveedor `Credentials` de Auth.js.
+- Contraseñas persistidas en tabla `users` con hash `bcrypt`.
+- Verificación de sesión en `middleware` y guardas server-side en layout/páginas.
+- Mensajes de error de autenticación genéricos en español.
+- Sin secretos ni validaciones de contraseña en cliente.

@@ -314,33 +314,11 @@ display: block;
 <script id="admin-script">
 document.addEventListener('DOMContentLoaded', function() {
 const adminLoginBtn = document.getElementById('admin-login');
-const adminLoginScreen = document.getElementById('admin-login-screen');
-const adminDashboard = document.getElementById('admin-dashboard');
-const adminLoginForm = document.getElementById('admin-login-form');
-const adminLogoutBtn = document.getElementById('admin-logout');
-const backFromAdminBtn = document.getElementById('back-from-admin');
-adminLoginBtn.addEventListener('click', () => {
-showScreen(adminLoginScreen);
-});
-backFromAdminBtn.addEventListener('click', () => {
-showScreen(welcomeScreen);
-});
-adminLoginForm.addEventListener('submit', (e) => {
-e.preventDefault();
-const password = document.getElementById('admin-password').value;
-if (password === 'admin123') {
-showScreen(adminDashboard);
-document.getElementById('admin-password').value = '';
-} else {
-const notification = document.createElement('div');
-notification.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-6 py-3 rounded-md shadow-lg z-50';
-notification.innerHTML = 'Contraseña incorrecta';
-document.body.appendChild(notification);
-setTimeout(() => notification.remove(), 3000);
+if (!adminLoginBtn) {
+return;
 }
-});
-adminLogoutBtn.addEventListener('click', () => {
-showScreen(welcomeScreen);
+adminLoginBtn.addEventListener('click', () => {
+window.location.href = '/admin/login';
 });
 });
 </script>
