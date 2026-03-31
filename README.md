@@ -1,12 +1,30 @@
-# Servicio Técnico CH GROUP
+# Servicio Técnico CH GROUP (Next.js)
 
-Este repositorio contiene la página web para que los huéspedes de CH GROUP puedan reportar incidencias en sus habitaciones o apartamentos.
+Aplicación migrada a **Next.js con App Router** para gestionar incidencias técnicas de forma mobile-first.
 
-## Uso
+## Requisitos
 
-1. Abre el archivo `index.html` en tu navegador.
-2. Selecciona el apartamento y la habitación correspondiente.
-3. Describe la incidencia y envía el formulario.
-4. Verás un mensaje de confirmación con el tiempo máximo de espera de dos días.
+- Node.js 20+
+- npm 10+
 
-La web está optimizada para dispositivos móviles, por lo que se recomienda escanear el código QR disponible en cada habitación para acceder rápidamente al formulario.
+## Desarrollo
+
+```bash
+npm install
+npm run dev
+```
+
+Abre `http://localhost:3000`.
+
+## Estructura
+
+- `app/`: rutas y API Routes (`app/api/*`).
+- `components/`: componentes visuales reutilizables.
+- `lib/`: constantes y tipos compartidos.
+- `prisma/`: esquema inicial para persistencia.
+- `public/`: estáticos públicos.
+
+## Notas
+
+- Tailwind usa compilación estándar con PostCSS (sin CDN en cliente).
+- Lógica de validación/recepción se encuentra en `app/api/incidents/*`.
