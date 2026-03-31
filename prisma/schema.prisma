@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum IncidentStatus {
+  NEW
+  IN_REVIEW
+  IN_PROGRESS
+  WAITING_FOR_PARTS
+  RESOLVED
+  CLOSED
+}
+
+enum Severity {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id                    String                  @id @default(cuid())
+  email                 String                  @unique
+  fullName              String
+  role                  String
+  incidentsReported     Incident[]              @relation("ReportedBy")
+  incidentsAssigned     Incident[]              @relation("AssignedTo")
+  incidentComments      IncidentComment[]
+  incidentStatusChanges IncidentStatusHistory[]
+  incidentAttachments   IncidentAttachment[]
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+}
+
+model Apartment {
+  id           String    @id @default(cuid())
+  name         String
+  address      String
+  internalCode String    @unique
+  rooms        Room[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Room {
+  id              String           @id @default(cuid())
+  name            String
+  number          String
+  apartmentId     String
+  apartment       Apartment        @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+  publicLinks     RoomPublicLink[]
+  incidents       Incident[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([apartmentId, number])
+}
+
+model RoomPublicLink {
+  id         String     @id @default(cuid())
+  roomId      String
+  room        Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  token       String     @unique
+  isActive    Boolean    @default(true)
+  expiresAt   DateTime?
+  incidents   Incident[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([roomId])
+}
+
+model Incident {
+  id               String                  @id @default(cuid())
+  roomId            String
+  room              Room                    @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  publicLinkId      String?
+  publicLink        RoomPublicLink?         @relation(fields: [publicLinkId], references: [id], onDelete: SetNull)
+  reportedByUserId  String?
+  reportedByUser    User?                   @relation("ReportedBy", fields: [reportedByUserId], references: [id], onDelete: SetNull)
+  assignedToUserId  String?
+  assignedToUser    User?                   @relation("AssignedTo", fields: [assignedToUserId], references: [id], onDelete: SetNull)
+  category          String
+  guestMessage      String
+  guestContact      String?
+  internalNotes     String?
+  status            IncidentStatus          @default(NEW)
+  severity          Severity                @default(MEDIUM)
+  createdAt         DateTime                @default(now())
+  acknowledgedAt    DateTime?
+  startedAt         DateTime?
+  resolvedAt        DateTime?
+  closedAt          DateTime?
+  updatedAt         DateTime                @updatedAt
+  attachments       IncidentAttachment[]
+  comments          IncidentComment[]
+  statusHistory     IncidentStatusHistory[]
+
+  @@index([roomId])
+  @@index([status])
+  @@index([severity])
+  @@index([createdAt])
+}
+
+model IncidentAttachment {
+  id               String    @id @default(cuid())
+  incidentId       String
+  incident         Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  fileName         String
+  fileUrl          String
+  mimeType         String?
+  sizeBytes        Int?
+  uploadedByUserId String?
+  uploadedByUser   User?     @relation(fields: [uploadedByUserId], references: [id], onDelete: SetNull)
+  createdAt        DateTime  @default(now())
+
+  @@index([incidentId])
+}
+
+model IncidentComment {
+  id         String    @id @default(cuid())
+  incidentId String
+  incident   Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  authorId   String?
+  author     User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  message    String
+  isInternal Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+
+  @@index([incidentId])
+  @@index([authorId])
+}
+
+model IncidentStatusHistory {
+  id              String          @id @default(cuid())
+  incidentId      String
+  incident        Incident        @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  fromStatus      IncidentStatus?
+  toStatus        IncidentStatus
+  changedByUserId String?
+  changedByUser   User?           @relation(fields: [changedByUserId], references: [id], onDelete: SetNull)
+  note            String?
+  createdAt       DateTime        @default(now())
+
+  @@index([incidentId])
+  @@index([createdAt])
+}
