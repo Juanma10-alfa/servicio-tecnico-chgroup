@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin QR | CH GROUP</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-6">
+  <main class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">/admin/qr · Enlaces públicos y códigos QR</h1>
+    <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-gray-100 text-gray-700">
+          <tr>
+            <th class="text-left p-3">Habitación pública</th>
+            <th class="text-left p-3">Versión</th>
+            <th class="text-left p-3">Estado</th>
+            <th class="text-left p-3">URL pública</th>
+            <th class="text-left p-3">Descargas QR</th>
+          </tr>
+        </thead>
+        <tbody id="table-body" class="divide-y divide-gray-100"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    async function loadLinks() {
+      const response = await fetch('/admin/qr');
+      const rows = await response.json();
+      const body = document.getElementById('table-body');
+      body.innerHTML = '';
+
+      rows.forEach((row) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-50';
+
+        const room = `${row.apartmentName} · ${row.roomName} (${row.roomPublicId})`;
+        const statusClass = row.linkStatus === 'active'
+          ? 'bg-green-100 text-green-700'
+          : 'bg-gray-100 text-gray-700';
+
+        tr.innerHTML = `
+          <td class="p-3">${room}</td>
+          <td class="p-3">${row.version ?? '-'}</td>
+          <td class="p-3"><span class="px-2 py-1 rounded-full text-xs ${statusClass}">${row.linkStatus ?? 'sin link'}</span></td>
+          <td class="p-3 break-all">${row.publicUrl ? `<a class="text-blue-700 underline" href="${row.publicUrl}" target="_blank" rel="noreferrer">${row.publicUrl}</a>` : '-'}</td>
+          <td class="p-3">${row.qr ? `<a class="text-blue-700 underline mr-3" href="${row.qr.png}">PNG</a><a class="text-blue-700 underline" href="${row.qr.svg}">SVG</a>` : '-'}</td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    loadLinks();
+  </script>
+</body>
+</html>
